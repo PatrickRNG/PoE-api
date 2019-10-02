@@ -32,7 +32,8 @@ function initMongo() {
     keepAlive: true,
     keepAliveInitialDelay: 200000,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   });
 
   const connection = mongoose.connection;

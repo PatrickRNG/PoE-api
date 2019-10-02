@@ -18,7 +18,7 @@ function createUser(req, res) {
 
 async function getUsers(req, res) {
   const users = await User.find({}, { _id: 0, __v: 0 }, err => {
-    if (err) logger.error(new VError(err, 'Failed to get users'));
+    if (err) console.error(new VError(err, 'Failed to get users'));
   });
 
   res.json(users);
@@ -27,7 +27,27 @@ async function getUsers(req, res) {
 async function getUser(req, res) {
   const { name } = req.params;
   const user = await User.findOne({name}, { _id: 0, __v: 0 }, err => {
-    if (err) logger.error(new VError(err, 'Failed to get user'));
+    if (err) console.error(new VError(err, 'Failed to get user'));
+  });
+
+  res.json(user);
+}
+
+async function updateUser(req, res) {
+  const { name } = req.params;
+  const { services } = req.body;
+  const user = await User.findOneAndUpdate({name}, {name, services}, { _id: 0, __v: 0 }, err => {
+    if (err) console.error(new VError(err, 'Failed to update user'));
+  });
+
+  res.json(user);
+}
+
+async function updateServices(req, res) {
+  const { name } = req.params;
+  const { services } = req.body;
+  const user = await User.findOneAndUpdate({name}, { services }, { _id: 0, __v: 0 }, err => {
+    if (err) console.error(new VError(err, 'Failed to update services'));
   });
 
   res.json(user);
@@ -36,7 +56,7 @@ async function getUser(req, res) {
 async function getUsersByService(req, res) {
   const { service } = req.params;
   const user = await User.find({"services.name": service }, { _id: 0, __v: 0 }, err => {
-    if (err) logger.error(new VError(err, 'Failed to get user by service'));
+    if (err) console.error(new VError(err, 'Failed to get user by service'));
   });
 
   res.json(user);
@@ -46,5 +66,7 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  updateUser,
+  updateServices,
   getUsersByService
 }
